@@ -32,27 +32,28 @@ class Server:
         return self.__dataset
 
 
-def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
-    """retrieve a specific page of data from the dataset"""
-    assert type(page) == int and type(page_size) == int
-    assert page > 0 and page_size > 0
+    def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
+        """retrieve a specific page of data from the dataset"""
+        assert type(page) == int and type(page_size) == int
+        assert page > 0 and page_size > 0
 
-    start_index, end_index = index_range(page, page_size)
-    dataset = self.dataset()
+        start_index, end_index = index_range(page, page_size)
+        dataset = self.dataset()
 
-    return dataset[start_index:end_index]
+        return dataset[start_index:end_index]
 
 
-def get_hyper(self, page: int = 1, page_size: int = 10) -> Dict:
-    """Retrieves information about a page"""
-    data = self.get_page(page, page_size)
-    start, end = index_range(page, page_size)
-    total_pages = math.ceil(len(self.__dataset) / page_size)
-    return {
-        'page_size': len(data),
-        'page': page,
-        'data': data,
-        'next_page': page + 1 if end < len(self.__dataset) else None,
-        'prev_page': page - 1 if start > 0 else None,
-        'total_pages': total_pages
-    }
+    def get_hyper(self, page: int = 1, page_size: int = 10) -> Dict:
+        """Retrieves information about a page"""
+        assert type(page) == int and type(page_size) == int
+        assert page > 0 and page_size > 0
+        data = self.get_page(page, page_size)
+        total_pages = math.ceil(len(self.dataset()) / page_size)
+        return {
+            'page_size': len(data),
+            'page': page,
+            'data': data,
+            'next_page': page + 1 if page < total_pages else None,
+            'prev_page': page - 1 if page > 1 else None,
+            'total_pages': total_pages
+            }
