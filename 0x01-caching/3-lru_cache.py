@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-''' 3-lru '''
+''' class that inherits from basecaching '''
 from base_caching import BaseCaching
 
 
