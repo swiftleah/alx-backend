@@ -17,10 +17,15 @@ app.register_blueprint(app_routes)
 @babel.localeselector
 def get_locale() -> Union[str, None]:
     """ get language """
-    localeReq = request.args.get('locale')
-    if localeReq and locale in Config.LANGUAGES:
+    localeReq = request.args['locale']
+    if localeReq in app.config['LANGUAGES']:
         return localeReq
-    return request.accept_languages.best_match(Config.LANGUAGES)
+    return request.accept_languages.best_match(app.config['LANGUAGES'])
+
+
+@app.route('/')
+def index():
+    return render_template('4-index.html')
 
 
 if __name__ == "__main__":
