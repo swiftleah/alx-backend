@@ -7,11 +7,19 @@ from config import Config
 from routes.routes_4 import app_routes
 
 
+class Config(object):
+    """
+    Application configuration class
+    """
+    LANGUAGES = ['en', 'fr']
+    BABEL_DEFAULT_LOCALE = 'en'
+    BABEL_DEFAULT_TIMEZONE = 'UTC'
+
+
 app = Flask(__name__)
 babel = Babel(app)
 
 app.config.from_object(Config)
-app.register_blueprint(app_routes)
 
 
 @babel.localeselector
@@ -23,8 +31,9 @@ def get_locale() -> Union[str, None]:
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
-@app.route('/')
-def index():
+@app.route('/', strict_slashes=False)
+def index() -> str:
+    """ renders basic template """
     return render_template('4-index.html')
 
 
